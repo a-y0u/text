@@ -10,31 +10,37 @@
     padding: 0;
     background-color: #f5ecd2; /* 背景色 */
     color: #222222;            /* 文字色 */
-    overflow-x: auto !important; /* 横スクロールを強制 */
-    overflow-y: hidden !important; /* 縦スクロールを完全禁止 */
+    overflow-x: auto !important; /* 横スクロール強制 */
+    overflow-y: hidden !important; /* 縦スクロール禁止 */
     width: 100vw;
     height: 100vh;
-    
-    /* 💡【重要】ブラウザに対して、このページは右から左（Right to Left）へ進む世界であることを宣言します */
-    direction: rtl; 
+    direction: ltr; /* 標準の文字の向き */
   }
   
-  /* 💡 詩を包むエリア（スマホでの縦の折り返しを許可する設定） */
   .poem-container {
-    writing-mode: vertical-rl; /* 完璧な縦書き */
+    writing-mode: vertical-rl; /* 縦書き */
     -webkit-writing-mode: vertical-rl;
-    font-family: "Yu Mincho", "MS Mincho", serif; /* 美しい明朝体 */
-    font-size: 22px;          /* 22pxのまましっかりと大きく表示します */
-    line-height: 2.2;          /* 行間をわずかに引き締め */
-    padding: 4vh 4vw;          /* スマホ用に上下左右の余白を少し詰め、表示領域を拡大 */
+    font-family: "Yu Mincho", "MS Mincho", serif;
     box-sizing: border-box;
+    white-space: pre !important;   /* ★元の『上揃え』が100%保証される絶対折り返し禁止に戻します */
+    width: max-content !important; /* 横幅は無限拡張 */
+    height: 100vh;                 /* 高さを画面全体に固定 */
+    text-align: start;             /* 確実に上揃えにする */
 
-    /* 💡【重要】ここを書き換えました */
-    white-space: pre-wrap !important; /* ★Enter改行を維持しつつ、画面下に達した時は左の行へ折り返す */
-    width: max-content !important;   /* 詩の長さに合わせて全体の横幅は自動拡張 */
-    height: 100vh;                   /* 高さは画面いっぱいに固定 */
+    /* 💡 【解決策】PC（画面が広い端末）での見え方 */
+    font-size: 22px;               
+    line-height: 2.3;
+    padding: 8vh 6vw;
   }
 
+  /* 💡 【重要】iPhone 11 Pro Maxなど、縦の長さが足りないスマホ（画面の高さが900px以下）の場合の特別命令 */
+  @media (max-height: 900px) {
+    .poem-container {
+      font-size: 19px;     /* ★18pxより少し大きく、22pxよりわずかに小さい、スマホでの限界の美しさを保つサイズ */
+      line-height: 2.0;    /* ★行間を少しだけ引き締めて、縦のスペースを確保します */
+      padding: 5vh 4vw;    /* ★上下の余白を詰め、文字が下に突き抜けるのを物理的に防ぎます */
+    }
+  }
 </style>
 </head>
 <body>
