@@ -8,52 +8,53 @@
   html, body {
     margin: 0;
     padding: 0;
-    background-color: #f5ecd2; /* 背景色 */
-    color: #222222;            /* 文字色 */
-    overflow-x: auto !important;   /* 横スクロールは絶対に許可 */
-    overflow-y: hidden !important; /* 縦スクロールは完全禁止 */
+    background-color: #f5ecd2;
+    color: #222222;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    
+    /* 💡 【修正点①】画面の高さの基準を「100vh」から「100svh（短縮画面高）」に変更します */
     width: 100vw;
-    height: 100vh;
-    direction: ltr;
+    height: 100svh !important; 
 
-    /* 💡 【解決策】iPhone特有の「上下のゴムのようなガタつき（バウンス）」を、システムの根本から完全にロックします */
     overscroll-behavior-y: none !important;
+    direction: ltr;
   }
   
   body {
     width: 100vw;
-    height: 100vh;
-    overscroll-behavior-y: none !important; /* 重ねてロック */
+    height: 100svh !important; /* 同上 */
+    overscroll-behavior-y: none !important;
   }
 
   .poem-container {
-    writing-mode: vertical-rl; /* 縦書き */
+    writing-mode: vertical-rl;
     -webkit-writing-mode: vertical-rl;
     font-family: "Yu Mincho", "MS Mincho", serif;
     box-sizing: border-box;
     display: inline-block; 
     vertical-align: top;
-    text-align: start; /* 上揃え */
-    height: 100vh !important; 
-    width: max-content !important; /* 横幅は無限拡張 */
-    white-space: pre-wrap !important; /* Enter改行優先、下端でインデント */
+    text-align: start;
+    width: max-content !important;
+    white-space: pre-wrap !important;
     font-size: 22px;               
     line-height: 2.3;
-
-    /* 💡 【解決策】PC大画面（デフォルト）での、元の美しい比率の余白をここに記述します */
     padding: 8vh 6vw !important; 
+
+    /* 💡 【修正点②】ここも「100svh」に合わせます */
+    height: 100svh !important; 
   }
 
-  /* 💡 【解決策】iPhone 11 Pro Maxなど、画面の高さが900px以下の「スマホ環境」だけの特別命令 */
+  /* 画面の高さが900px以下のスマホ環境 */
   @media (max-height: 900px) {
     .poem-container {
-      /* スマホの時だけ、上側にほんの少しの固定余白（25px）を持たせ、下側は30pxで安定させます */
       padding-top: 25px !important;    
       padding-bottom: 30px !important; 
       padding-right: 5vw !important;   
       padding-left: 5vw !important;
     }
   }
+
 </style>
 
 </head>
