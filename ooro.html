@@ -30,13 +30,15 @@
     font-family: "Yu Mincho", "MS Mincho", serif;
     box-sizing: border-box;
     width: max-content !important; /* 横幅は無限拡張 */
-    height: 100vh;
     text-align: start; /* 上揃え */
+     /* 💡 【ここを書き換えます】全体の高さから、追加した上下余白の合計（30px）をあらかじめ引き算します */
+    height: calc(100vh - 30px) !important; 
 
     /* 💡 【重要】PC・スマホ共通：文字の大きさを22pxのまま固定します */
     font-size: 22px;               
     line-height: 2.3;
- /* 💡 【ここを差し替えます】上下左右の余白を個別にミリ単位でコントロールします */
+    
+ /* 上下の余白（合計30px） */
     padding-top: 25px !important;    /* ★文字の上側に、ほんの少しの余白（25px）を固定で持たせます */
     padding-bottom: 5px !important;  /* ★文字の下側は、画面幅を最大活用するためギリギリ（5px）まで詰めます */
     padding-right: 5vw !important;   /* 左右の余白は、現在の5vwのまま維持します */
