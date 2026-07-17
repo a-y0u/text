@@ -169,15 +169,33 @@
 </div>
 
 <script>
-  function scrollToRightEnd() {
-    const targetLeft = document.documentElement.scrollWidth || document.body.scrollWidth;
-    window.scrollTo({ left: targetLeft, top: 0, behavior: 'instant' });
-    document.documentElement.scrollLeft = targetLeft;
-    document.body.scrollLeft = targetLeft;
+  function scrollToAbsoluteRight() {
+    // 💡 ブラウザ全体の最大横幅（スクロールできる限界値）を確実に取得する3重の防護策
+    const maxScrollLeft = Math.max(
+      document.documentElement.scrollWidth,
+      document.body.scrollWidth,
+      document.documentElement.offsetWidth
+    );
+
+    // 💡 中盤で止まるバグを殺すため、一度「左端（0）」を認識させてから、
+    // 即座に計算した「最大幅（一番右端）」へカメラを強制ワープさせます。
+    window.scrollTo({ left: 0, top: 0, behavior: 'instant' });
+    window.scrollTo({ left: maxScrollLeft, top: 0, behavior: 'instant' });
+
+    // 各種ブラウザ（SafariやChrome）の内部座標バグを力技で上書き固定します
+    document.documentElement.scrollLeft = maxScrollLeft;
+    document.body.scrollLeft = maxScrollLeft;
   }
-  window.addEventListener('DOMContentLoaded', scrollToRightEnd);
-  window.addEventListener('load', scrollToRightEnd);
-  setTimeout(scrollToRightEnd, 150); // 描画遅延を確実に吸収するため150msに変更
+
+  // 1. ページ構成ができた瞬間
+  window.addEventListener('DOMContentLoaded', scrollToAbsoluteRight);
+  // 2. 文字の描画や余白の計算が完全に終わった瞬間
+  window.addEventListener('load', scrollToAbsoluteRight);
+
+  // 3. 【最重要】Flexboxによるコンマ数秒の描画遅延（中盤への引き戻し）を完全に力でねじ伏せるため、
+  // ページが開いた「0.05秒後」と「0.2秒後」の2段階で、ダメ押しの右端ワープを実行します。
+  setTimeout(scrollToAbsoluteRight, 50);
+  setTimeout(scrollToAbsoluteRight, 200);
 </script>
   
 </body>
