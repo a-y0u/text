@@ -14,7 +14,7 @@
     overflow-y: hidden !important; /* 縦スクロール禁止 */
     width: 100vw;
     height: 100vh;
-    direction: ltr; /* 標準の文字の向き */
+    direction: ltr; /* 文字の並びは標準 */
   }
   
   .poem-container {
@@ -22,23 +22,23 @@
     -webkit-writing-mode: vertical-rl;
     font-family: "Yu Mincho", "MS Mincho", serif;
     box-sizing: border-box;
-    white-space: pre !important;   /* ★元の『上揃え』が100%保証される絶対折り返し禁止に戻します */
+    white-space: pre !important;   /* 上揃えを保証する絶対折り返し禁止 */
     width: max-content !important; /* 横幅は無限拡張 */
-    height: 100vh;                 /* 高さを画面全体に固定 */
-    text-align: start;             /* 確実に上揃えにする */
+    height: 100vh;
+    text-align: start;             /* 上揃え */
 
-    /* 💡 【解決策】PC（画面が広い端末）での見え方 */
+    /* PCの大画面での基本レイアウト */
     font-size: 22px;               
     line-height: 2.3;
     padding: 8vh 6vw;
   }
 
-  /* 💡 【重要】iPhone 11 Pro Maxなど、縦の長さが足りないスマホ（画面の高さが900px以下）の場合の特別命令 */
+  /* 画面の高さが900px以下のスマホ環境 */
   @media (max-height: 900px) {
     .poem-container {
-      font-size: 19px;     /* ★18pxより少し大きく、22pxよりわずかに小さい、スマホでの限界の美しさを保つサイズ */
-      line-height: 2.0;    /* ★行間を少しだけ引き締めて、縦のスペースを確保します */
-      padding: 5vh 4vw;    /* ★上下の余白を詰め、文字が下に突き抜けるのを物理的に防ぎます */
+      font-size: 19px;     /* 画面内に収まる最適な文字サイズ */
+      line-height: 2.0;    
+      padding: 5vh 4vw;    /* 上下を詰めて見切れを防ぐ */
     }
   }
 </style>
@@ -167,12 +167,24 @@
 
 </div>
 
-  <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    // ブラウザの仕様（ChromiumやSafari）の違いによるスクロールバグを完全に防ぐため、2通りの命令で右端へ送ります
-    window.scrollTo(document.body.scrollWidth, 0);
-    document.documentElement.scrollLeft = document.documentElement.scrollWidth;
-  });
+<!-- 💡 【修正点】ブラウザの描画遅延を完全に克服し、確実に右端へ移動させる強化スクリプト -->
+<script>
+  function scrollToRightEnd() {
+    const targetLeft = document.documentElement.scrollWidth || document.body.scrollWidth;
+    
+    // 1. 即座に右端へワープさせる命令
+    window.scrollTo({ left: targetLeft, top: 0, behavior: 'instant' });
+    document.documentElement.scrollLeft = targetLeft;
+    document.body.scrollLeft = targetLeft;
+  }
+
+  // ページ読み込み時の各段階で何度も右端への移動を試みます
+  window.addEventListener('DOMContentLoaded', scrollToRightEnd);
+  window.addEventListener('load', scrollToRightEnd);
+
+  // 💡 【最重要】CSSの計算やフォント読み込みによる「数ミリの描画ズレ」を完全に吸収するため、
+  // ページを開いた0.1秒後（100ミリ秒後）に、もう一度だけダメ押しの右端スクロールを実行します。
+  setTimeout(scrollToRightEnd, 100);
 </script>
   
 </body>
