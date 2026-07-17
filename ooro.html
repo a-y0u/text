@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>往路</title>
+<title>作品</title>
 <style>
   html, body {
     margin: 0;
@@ -14,33 +14,34 @@
     overflow-y: hidden !important; /* 縦スクロール禁止 */
     width: 100vw;
     height: 100vh;
-    direction: ltr; /* 文字の並びは標準 */
+    direction: ltr;
   }
   
+  /* 💡 【構造改革】下揃えバグを物理的に相殺する親の檻（Flexbox） */
+  body {
+    display: flex;
+    justify-content: flex-start;
+    align-content: flex-start; /* ★重要：これが子要素の『下揃え』を強制的に『上揃え』に引っ張り戻します */
+  }
+
   .poem-container {
     writing-mode: vertical-rl; /* 縦書き */
     -webkit-writing-mode: vertical-rl;
     font-family: "Yu Mincho", "MS Mincho", serif;
     box-sizing: border-box;
-    white-space: pre !important;   /* 上揃えを保証する絶対折り返し禁止 */
     width: max-content !important; /* 横幅は無限拡張 */
     height: 100vh;
-    text-align: start;             /* 上揃え */
+    text-align: start; /* 上揃え */
 
-    /* PCの大画面での基本レイアウト */
+    /* 💡 【重要】PC・スマホ共通：文字の大きさを22pxのまま固定します */
     font-size: 22px;               
     line-height: 2.3;
-    padding: 8vh 6vw;
+    padding: 6vh 5vw; /* 上下の余白を固定 */
+
+    /* 💡 【重要】ここを書き換えました */
+    white-space: pre-wrap !important; /* ★Enter改行を最優先しつつ、画面下に来たら左の行へインデント（折り返し）する */
   }
 
-  /* 画面の高さが900px以下のスマホ環境 */
-  @media (max-height: 900px) {
-    .poem-container {
-      font-size: 19px;     /* 画面内に収まる最適な文字サイズ */
-      line-height: 2.0;    
-      padding: 5vh 4vw;    /* 上下を詰めて見切れを防ぐ */
-    }
-  }
 </style>
 </head>
 <body>
@@ -167,24 +168,16 @@
 
 </div>
 
-<!-- 💡 【修正点】ブラウザの描画遅延を完全に克服し、確実に右端へ移動させる強化スクリプト -->
 <script>
   function scrollToRightEnd() {
     const targetLeft = document.documentElement.scrollWidth || document.body.scrollWidth;
-    
-    // 1. 即座に右端へワープさせる命令
     window.scrollTo({ left: targetLeft, top: 0, behavior: 'instant' });
     document.documentElement.scrollLeft = targetLeft;
     document.body.scrollLeft = targetLeft;
   }
-
-  // ページ読み込み時の各段階で何度も右端への移動を試みます
   window.addEventListener('DOMContentLoaded', scrollToRightEnd);
   window.addEventListener('load', scrollToRightEnd);
-
-  // 💡 【最重要】CSSの計算やフォント読み込みによる「数ミリの描画ズレ」を完全に吸収するため、
-  // ページを開いた0.1秒後（100ミリ秒後）に、もう一度だけダメ押しの右端スクロールを実行します。
-  setTimeout(scrollToRightEnd, 100);
+  setTimeout(scrollToRightEnd, 150); // 描画遅延を確実に吸収するため150msに変更
 </script>
   
 </body>
