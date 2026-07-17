@@ -11,16 +11,19 @@
     background-color: #f5ecd2; /* 背景色 */
     color: #222222;            /* 文字色 */
     overflow-x: auto !important;   /* 横スクロールは絶対に許可 */
-    overflow-y: hidden !important; /* ★最重要：画面全体の上下スクロールを『物理的に完全禁止』にします */
+    overflow-y: hidden !important; /* 縦スクロールは完全禁止 */
     width: 100vw;
     height: 100vh;
     direction: ltr;
+
+    /* 💡 【解決策】iPhone特有の「上下のゴムのようなガタつき（バウンス）」を、システムの根本から完全にロックします */
+    overscroll-behavior-y: none !important;
   }
   
-  /* 💡 【修正点】諸悪の根源だった display: flex; を完全に削除し、標準のクリーンな状態に戻しました */
   body {
     width: 100vw;
     height: 100vh;
+    overscroll-behavior-y: none !important; /* 重ねてロック */
   }
 
   .poem-container {
@@ -28,30 +31,31 @@
     -webkit-writing-mode: vertical-rl;
     font-family: "Yu Mincho", "MS Mincho", serif;
     box-sizing: border-box;
-    
-    /* 💡 【重要】Flexboxを使わずに、文字の開始位置を完璧な『上揃え（頭揃え）』に固定する設定 */
     display: inline-block; 
     vertical-align: top;
-    text-align: start;
-
-    /* 💡 【重要】全体の高さを「100vh（画面ぴったり）」に強制ロックします */
+    text-align: start; /* 上揃え */
     height: 100vh !important; 
     width: max-content !important; /* 横幅は無限拡張 */
-
-    /* 💡 【重要】文字の大きさを22pxのまま固定します */
+    white-space: pre-wrap !important; /* Enter改行優先、下端でインデント */
     font-size: 22px;               
     line-height: 2.3;
 
-    /* 💡 【重要】余白の設定を見直しました */
-    padding-top: 25px !important;    /* ★文字の上側に、ほんの少しの上品な余白（25px） */
-    padding-bottom: 30px !important; /* ★下側の判定を安定させるため、適度な余白（30px）を持たせます */
-    padding-right: 5vw !important;   
-    padding-left: 5vw !important;
+    /* 💡 【解決策】PC大画面（デフォルト）での、元の美しい比率の余白をここに記述します */
+    padding: 8vh 6vw !important; 
+  }
 
-    /* 💡 Enter改行を最優先しつつ、画面下（100vhの底）に来たら左の行へインデント（折り返し）する */
-    white-space: pre-wrap !important; 
+  /* 💡 【解決策】iPhone 11 Pro Maxなど、画面の高さが900px以下の「スマホ環境」だけの特別命令 */
+  @media (max-height: 900px) {
+    .poem-container {
+      /* スマホの時だけ、上側にほんの少しの固定余白（25px）を持たせ、下側は30pxで安定させます */
+      padding-top: 25px !important;    
+      padding-bottom: 30px !important; 
+      padding-right: 5vw !important;   
+      padding-left: 5vw !important;
+    }
   }
 </style>
+
 </head>
 <body>
 <div class="poem-container">
