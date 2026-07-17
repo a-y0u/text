@@ -10,21 +10,29 @@
     padding: 0;
     background-color: #f5ecd2; /* 背景色 */
     color: #222222;            /* 文字色 */
-    overflow-x: auto;          /* 画面全体の横スクロールを許可 */
-    overflow-y: hidden;        /* 縦スクロールを完全に消す */
+    overflow-x: auto !important; /* 横スクロールを強制 */
+    overflow-y: hidden !important; /* 縦スクロールを完全禁止 */
     width: 100vw;
     height: 100vh;
+    
+    /* 💡【重要】ブラウザに対して、このページは右から左（Right to Left）へ進む世界であることを宣言します */
+    direction: rtl; 
   }
+  
   .poem-container {
-    writing-mode: vertical-rl; /* 完璧な縦書き */
+    writing-mode: vertical-rl; /* 縦書き */
+    -webkit-writing-mode: vertical-rl;
     font-family: "Yu Mincho", "MS Mincho", serif;
-    font-size: 24px;          /* スマホでも読みやすい文字サイズ */
+    font-size: 22px;
     line-height: 2.3;
-    padding: 5vh 5vw;          /* 画面の高さ・幅に合わせた美しい余白 */
-    white-space: pre;          /* あなたのEnter改行以外では絶対に折り返さない */
-    width: max-content;        /* 詩の長さに合わせて横幅が無限に広がる */
-    height: 90vh;              /* 上下の高さ制限を完全に無くし、画面いっぱいに使う */
+    padding: 8vh 6vw;
     box-sizing: border-box;
+    white-space: pre !important;   /* 自動折り返し完全禁止 */
+    width: max-content !important; /* 詩の長さに合わせて横幅が右側に自動で無限拡張 */
+    height: 100vh;
+    
+    /* 💡【重要】中の文字だけは通常の左から右（左横書きの並び）に混乱しないよう、通常のテキスト方向に固定します */
+    direction: ltr; 
   }
 </style>
 </head>
@@ -151,5 +159,14 @@
 
 
 </div>
+
+  <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    // ブラウザの仕様（ChromiumやSafari）の違いによるスクロールバグを完全に防ぐため、2通りの命令で右端へ送ります
+    window.scrollTo(document.body.scrollWidth, 0);
+    document.documentElement.scrollLeft = document.documentElement.scrollWidth;
+  });
+</script>
+  
 </body>
 </html>
