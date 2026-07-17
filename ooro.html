@@ -36,7 +36,11 @@
     /* 💡 【重要】PC・スマホ共通：文字の大きさを22pxのまま固定します */
     font-size: 22px;               
     line-height: 2.3;
-    padding: 6vh 5vw; /* 上下の余白を固定 */
+ /* 💡 【ここを差し替えます】上下左右の余白を個別にミリ単位でコントロールします */
+    padding-top: 25px !important;    /* ★文字の上側に、ほんの少しの余白（25px）を固定で持たせます */
+    padding-bottom: 5px !important;  /* ★文字の下側は、画面幅を最大活用するためギリギリ（5px）まで詰めます */
+    padding-right: 5vw !important;   /* 左右の余白は、現在の5vwのまま維持します */
+    padding-left: 5vw !important;
 
     /* 💡 【重要】ここを書き換えました */
     white-space: pre-wrap !important; /* ★Enter改行を最優先しつつ、画面下に来たら左の行へインデント（折り返し）する */
