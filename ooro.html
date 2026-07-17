@@ -19,21 +19,22 @@
     direction: rtl; 
   }
   
+  /* 💡 詩を包むエリア（スマホでの縦の折り返しを許可する設定） */
   .poem-container {
-    writing-mode: vertical-rl; /* 縦書き */
+    writing-mode: vertical-rl; /* 完璧な縦書き */
     -webkit-writing-mode: vertical-rl;
-    font-family: "Yu Mincho", "MS Mincho", serif;
-    font-size: 18px;
-    line-height: 2.3;
-    padding: 8vh 6vw;
+    font-family: "Yu Mincho", "MS Mincho", serif; /* 美しい明朝体 */
+    font-size: 22px;          /* 22pxのまましっかりと大きく表示します */
+    line-height: 2.2;          /* 行間をわずかに引き締め */
+    padding: 4vh 4vw;          /* スマホ用に上下左右の余白を少し詰め、表示領域を拡大 */
     box-sizing: border-box;
-    white-space: pre !important;   /* 自動折り返し完全禁止 */
-    width: max-content !important; /* 詩の長さに合わせて横幅が右側に自動で無限拡張 */
-    height: 100vh;
-    
-    /* 💡【重要】中の文字だけは通常の左から右（左横書きの並び）に混乱しないよう、通常のテキスト方向に固定します */
-    direction: ltr; 
+
+    /* 💡【重要】ここを書き換えました */
+    white-space: pre-wrap !important; /* ★Enter改行を維持しつつ、画面下に達した時は左の行へ折り返す */
+    width: max-content !important;   /* 詩の長さに合わせて全体の横幅は自動拡張 */
+    height: 100vh;                   /* 高さは画面いっぱいに固定 */
   }
+
 </style>
 </head>
 <body>
